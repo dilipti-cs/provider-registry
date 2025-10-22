@@ -455,6 +455,56 @@ For production deployment:
 - Follows [HL7 FHIR R4](https://hl7.org/fhir/R4/) standards
 - Aligned with [Da Vinci PDEX Plan Network IG](https://build.fhir.org/ig/HL7/davinci-pdex-plan-net/)
 
+## Deploying to Google Cloud Platform (GCP)
+
+This application is ready to deploy to GCP using Google Kubernetes Engine (GKE). We provide complete infrastructure-as-code and deployment automation.
+
+### Quick GCP Deployment
+
+```bash
+# 1. Setup GCP infrastructure with Terraform
+./scripts/setup-infrastructure.sh
+
+# 2. Deploy the application
+./scripts/deploy.sh
+
+# 3. Initialize Medplum (first time only)
+./scripts/init-medplum.sh
+```
+
+### What's Included for GCP Deployment
+
+- **Kubernetes manifests** (k8s/) - Complete K8s configuration for all services
+- **Terraform scripts** (terraform/) - Infrastructure as Code for GKE cluster
+- **Cloud Build** (cloudbuild.yaml) - CI/CD pipeline configuration
+- **Deployment scripts** (scripts/) - Automated deployment and management
+- **Complete documentation** (GCP_DEPLOYMENT.md) - Step-by-step deployment guide
+
+### GCP Architecture
+
+The deployment creates:
+- **GKE Cluster**: Autoscaling Kubernetes cluster
+- **Load Balancer**: HTTPS ingress with managed SSL certificates
+- **Cloud SQL** (optional): Managed PostgreSQL for production
+- **Container Registry**: Docker image storage
+- **Cloud Build**: Automated CI/CD pipeline
+
+### Prerequisites for GCP Deployment
+
+1. Google Cloud account with billing enabled
+2. `gcloud` CLI installed and authenticated
+3. `kubectl` installed
+4. `terraform` installed (for infrastructure setup)
+
+### Estimated GCP Costs
+
+- **Development**: ~$30/month (1 e2-medium node, no load balancer)
+- **Production**: ~$160-200/month (2+ e2-standard-4 nodes, load balancer)
+
+See [GCP_DEPLOYMENT.md](./GCP_DEPLOYMENT.md) for detailed deployment instructions.
+
+---
+
 ## License
 
 ISC

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: provider-registry
+  labels:
+    app: provider-registry
+    environment: production

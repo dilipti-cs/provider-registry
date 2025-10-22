@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: medplum-service
+  namespace: provider-registry
+spec:
+  selector:
+    app: medplum-server
+  ports:
+    - port: 8103
+      targetPort: 8103
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medplum-server
+  namespace: provider-registry
+spec:
+  replicas: 2  # Can scale horizontally
+  selector:
+    matchLabels:
+      app: medplum-server
+  template:
+    metadata:
+      labels:
+        app: medplum-server
+    spec:
+      containers:
+      - name: medplum-server
+        image: medplum/medplum-server:latest
+        ports:
+        - containerPort: 8103
+          name: http
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: NODE_ENV
+        - name: DATABASE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: DATABASE_HOST
+        - name: DATABASE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: DATABASE_PORT
+        - name: DATABASE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: DATABASE_NAME
+        - name: DATABASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: provider-registry-secrets
+              key: DATABASE_USERNAME
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: provider-registry-secrets
+              key: DATABASE_PASSWORD
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: REDIS_PORT
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: PORT
+        - name: BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: BASE_URL
+        - name: ISSUER
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: ISSUER
+        - name: JWKS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: JWKS_URL
+        - name: AUTHORIZE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: AUTHORIZE_URL
+        - name: TOKEN_URL
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: TOKEN_URL
+        - name: USERINFO_URL
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: USERINFO_URL
+        - name: APP_URL
+          valueFrom:
+            configMapKeyRef:
+              name: provider-registry-config
+              key: APP_URL
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8103
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8103
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5

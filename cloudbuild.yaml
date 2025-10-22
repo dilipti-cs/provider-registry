@@ -1,0 +1,84 @@
+# Cloud Build configuration for automated CI/CD
+# Triggers on push to main branch or manually
+
+steps:
+  # Step 1: Build the frontend Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/provider-registry-frontend:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/provider-registry-frontend:latest'
+      - '-f'
+      - 'Dockerfile'
+      - '.'
+    id: 'build-frontend'
+
+  # Step 2: Push the Docker image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/provider-registry-frontend:$COMMIT_SHA'
+    id: 'push-frontend-sha'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/provider-registry-frontend:latest'
+    id: 'push-frontend-latest'
+
+  # Step 3: Deploy to GKE (requires GKE cluster to be already created)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'container'
+      - 'clusters'
+      - 'get-credentials'
+      - 'provider-registry-cluster'  # Change to your cluster name
+      - '--region=${_GKE_REGION}'
+      - '--project=$PROJECT_ID'
+    id: 'get-credentials'
+
+  # Step 4: Update the frontend deployment with new image
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/provider-registry-frontend'
+      - 'frontend=gcr.io/$PROJECT_ID/provider-registry-frontend:$COMMIT_SHA'
+      - '-n'
+      - 'provider-registry'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_GKE_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=provider-registry-cluster'
+    id: 'update-deployment'
+
+  # Step 5: Wait for rollout to complete
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'rollout'
+      - 'status'
+      - 'deployment/provider-registry-frontend'
+      - '-n'
+      - 'provider-registry'
+      - '--timeout=5m'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_GKE_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=provider-registry-cluster'
+    id: 'wait-rollout'
+
+# Substitution variables
+substitutions:
+  _GKE_REGION: 'us-central1'  # Change to your preferred region
+
+# Timeout for the entire build
+timeout: '1200s'
+
+# Images to be stored in Container Registry
+images:
+  - 'gcr.io/$PROJECT_ID/provider-registry-frontend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/provider-registry-frontend:latest'
+
+options:
+  machineType: 'N1_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY

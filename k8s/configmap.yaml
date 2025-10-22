@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: provider-registry-config
+  namespace: provider-registry
+data:
+  # PostgreSQL Configuration
+  POSTGRES_DB: "medplum"
+  DATABASE_HOST: "postgres-service"
+  DATABASE_PORT: "5432"
+  DATABASE_NAME: "medplum"
+
+  # Redis Configuration
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+
+  # Medplum Server Configuration
+  NODE_ENV: "production"
+  PORT: "8103"
+
+  # Update these URLs after getting your external IP/domain
+  BASE_URL: "https://your-domain.com"
+  ISSUER: "https://your-domain.com"
+  JWKS_URL: "https://your-domain.com/.well-known/jwks.json"
+  AUTHORIZE_URL: "https://your-domain.com/oauth2/authorize"
+  TOKEN_URL: "https://your-domain.com/oauth2/token"
+  USERINFO_URL: "https://your-domain.com/oauth2/userinfo"
+  APP_URL: "https://your-frontend-domain.com"
