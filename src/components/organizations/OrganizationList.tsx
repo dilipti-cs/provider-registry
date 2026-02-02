@@ -12,7 +12,7 @@ import {
   Badge,
   ActionIcon,
 } from '@mantine/core';
-import { IconPlus, IconSearch, IconEdit, IconEye } from '@tabler/icons-react';
+import { IconPlus, IconSearch, IconEdit } from '@tabler/icons-react';
 import { useMedplum } from '@medplum/react';
 import { Organization } from '@medplum/fhirtypes';
 

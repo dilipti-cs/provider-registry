@@ -91,7 +91,7 @@ export default function PractitionerForm() {
               ],
             }
           }
-          onSubmit={handleSubmit}
+          onSubmit={(resource) => handleSubmit(resource as Practitioner)}
         />
 
         <Group mt="md">

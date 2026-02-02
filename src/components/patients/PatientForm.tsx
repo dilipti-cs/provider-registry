@@ -106,7 +106,7 @@ export default function PatientForm() {
                 ],
               }
             }
-            onSubmit={handleSubmit}
+            onSubmit={(resource) => handleSubmit(resource as Patient)}
           />
         </Stack>
       </Paper>
@@ -129,7 +129,7 @@ export default function PatientForm() {
               targetTypes={['Organization']}
               placeholder="Select managing organization"
               defaultValue={managingOrganization}
-              onChange={(value) => setManagingOrganization(value)}
+              onChange={(value) => setManagingOrganization(value as Reference<Organization>)}
             />
             <Text size="xs" c="dimmed" mt={4}>
               The organization that manages this patient's care
@@ -147,7 +147,7 @@ export default function PatientForm() {
               defaultValue={generalPractitioners[0]}
               onChange={(value) => {
                 if (value) {
-                  setGeneralPractitioners([value]);
+                  setGeneralPractitioners([value as Reference<PractitionerRole>]);
                 } else {
                   setGeneralPractitioners([]);
                 }

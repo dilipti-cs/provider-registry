@@ -32,6 +32,16 @@ export default function AppLayout() {
   console.log('AppLayout rendered, profile:', profile);
   console.log('Navbar opened state:', opened);
 
+  // Get display name from profile
+  const getProfileName = () => {
+    if (!profile) return 'User';
+    if ('name' in profile && profile.name && profile.name[0]) {
+      const name = profile.name[0];
+      return name.text || `${name.given?.[0] || ''} ${name.family || ''}`.trim() || 'User';
+    }
+    return 'User';
+  };
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -46,7 +56,7 @@ export default function AppLayout() {
           </Group>
 
           <Group>
-            <Text size="sm">{profile?.display || 'User'}</Text>
+            <Text size="sm">{getProfileName()}</Text>
             <Button
               variant="subtle"
               leftSection={<IconLogout size={16} />}

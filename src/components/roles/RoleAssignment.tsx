@@ -110,7 +110,7 @@ export default function RoleAssignment() {
                 name="practitioner"
                 targetTypes={['Practitioner']}
                 placeholder="Select a practitioner"
-                onChange={(value) => setPractitioner(value)}
+                onChange={(value) => setPractitioner(value as Reference<Practitioner>)}
               />
             </div>
 
@@ -122,7 +122,7 @@ export default function RoleAssignment() {
                 name="organization"
                 targetTypes={['Organization']}
                 placeholder="Select an organization"
-                onChange={(value) => setOrganization(value)}
+                onChange={(value) => setOrganization(value as Reference<Organization>)}
               />
             </div>
 

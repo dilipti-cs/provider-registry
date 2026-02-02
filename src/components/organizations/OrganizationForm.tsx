@@ -97,7 +97,7 @@ export default function OrganizationForm() {
               ],
             }
           }
-          onSubmit={handleSubmit}
+          onSubmit={(resource) => handleSubmit(resource as Organization)}
         />
 
         <Group mt="md">
