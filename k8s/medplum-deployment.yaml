@@ -9,7 +9,7 @@ spec:
   ports:
     - port: 8103
       targetPort: 8103
-  type: ClusterIP
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
