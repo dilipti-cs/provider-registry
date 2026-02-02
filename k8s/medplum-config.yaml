@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: medplum-server-config
+  namespace: provider-registry
+data:
+  medplum.config.json: |
+    {
+      "port": 8103,
+      "baseUrl": "http://localhost:8103",
+      "issuer": "http://localhost:8103",
+      "jwksUrl": "http://localhost:8103/.well-known/jwks.json",
+      "authorizeUrl": "http://localhost:8103/oauth2/authorize",
+      "tokenUrl": "http://localhost:8103/oauth2/token",
+      "userInfoUrl": "http://localhost:8103/oauth2/userinfo",
+      "appUrl": "http://localhost:3001",
+      "binaryStorage": "file:./binary/",
+      "storageBaseUrl": "http://localhost:8103/storage/",
+      "signingKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA3V7dCA3dmytTOgOny6K3RVwiHOHKAMJL/MGCZPMCfRqKzLlP\nrZOIgSHN8iyF0FbKDpD4vJKqRZJsLVEJj7WlQjMWi5WlKLrMDRlpOvAqLCKB5gWy\nB0gIl8J/0bYTgC9lGwlVzKIIMpWFvqBXRoD0/6/4CZS5kB4PQBC+YWDxXR7KkLDd\n5pNKhRGQG8yRKMPrAGGn4WLPt9aZf9XnS0gvqK6pLQGLKCL8Dp7wPQmVuQPqVPYO\nSAm5lHB+5l9rBCE8rHX8h5lGvV9S3NzQqKFjILJPKWx/UGPAr5NMHE1LPcZHBLlL\n3xTKnQjDqAcnWCJlBKdQRMGvLLq2G5l+ZNvPRQIDAQABAoIBAFqPPqLT8HF8g9dY\n7p7nEjdRKwYaGdHr5N7KgCXdKQRBGWX7xGDEKFLLJ3RhPo9EKvQ8nj6qGGGQRZqA\nQZvKrJxzXDYrLx0mTKM3qbEqMGz0nVJf8KLK+vqBK3v0zHJXRBGRVKGLqLJmCNHr\nqGQQ9w9L0qGYDGvNqMqN3RqLQGqLlLKGP9Ll1GPqLQKJqLQLPJCLRPQKQPGLQKQL\nPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKL\nQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGL\nQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQKCAQEA8j3yPkGJQPGL\nQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQL\nPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKL\nQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQPGLQKQLPQKLQKCAQEA6Td7QPGL\n-----END RSA PRIVATE KEY-----",
+      "signingKeyPassphrase": "medplum",
+      "supportEmail": "support@example.com",
+      "database": {
+        "host": "postgres-service",
+        "port": 5432,
+        "dbname": "medplum"
+      },
+      "redis": {
+        "host": "redis-service",
+        "port": 6379
+      },
+      "logLevel": "info"
+    }
