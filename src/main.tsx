@@ -8,9 +8,9 @@ import App from './App';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 
-// Initialize Medplum client pointing to local server
+// Initialize Medplum client pointing to external LoadBalancer
 const medplum = new MedplumClient({
-  baseUrl: 'http://localhost:8103',
+  baseUrl: 'http://136.116.138.121:8103',
   onUnauthenticated: () => {
     // Redirect to login when session expires
     if (window.location.pathname !== '/login') {
