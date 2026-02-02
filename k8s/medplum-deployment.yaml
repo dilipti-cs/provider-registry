@@ -128,16 +128,18 @@ spec:
           httpGet:
             path: /healthcheck
             port: 8103
-          initialDelaySeconds: 60
+          initialDelaySeconds: 90
           periodSeconds: 30
           timeoutSeconds: 10
+          failureThreshold: 5
         readinessProbe:
           httpGet:
             path: /healthcheck
             port: 8103
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
       volumes:
       - name: config
         configMap:

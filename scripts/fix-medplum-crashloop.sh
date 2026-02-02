@@ -25,14 +25,29 @@ fi
 echo -e "${GREEN}✓ Namespace exists${NC}"
 echo ""
 
+# Check and apply secrets
+echo -e "${YELLOW}Step 2: Checking database credentials (secrets)...${NC}"
+if ! kubectl get secret provider-registry-secrets -n provider-registry &>/dev/null; then
+    echo -e "${YELLOW}⚠ Secrets not found, creating with default values...${NC}"
+    echo ""
+    echo "IMPORTANT: Using default credentials for development."
+    echo "For production, change these values!"
+    echo ""
+    kubectl apply -f k8s/secrets.yaml
+    echo -e "${GREEN}✓ Secrets created${NC}"
+else
+    echo -e "${GREEN}✓ Secrets already exist${NC}"
+fi
+echo ""
+
 # Apply the Medplum config ConfigMap
-echo -e "${YELLOW}Step 2: Applying Medplum configuration file...${NC}"
+echo -e "${YELLOW}Step 3: Applying Medplum configuration file (with database credentials)...${NC}"
 kubectl apply -f k8s/medplum-config.yaml
 echo -e "${GREEN}✓ ConfigMap applied${NC}"
 echo ""
 
 # Apply the updated Medplum deployment
-echo -e "${YELLOW}Step 3: Updating Medplum deployment with config volume mount...${NC}"
+echo -e "${YELLOW}Step 4: Updating Medplum deployment with config volume mount...${NC}"
 kubectl apply -f k8s/medplum-deployment.yaml
 echo -e "${GREEN}✓ Deployment updated${NC}"
 echo ""
@@ -41,18 +56,18 @@ echo ""
 sleep 3
 
 # Check current pod status
-echo -e "${YELLOW}Step 4: Checking current pod status...${NC}"
+echo -e "${YELLOW}Step 5: Checking current pod status...${NC}"
 kubectl get pods -n provider-registry -l app=medplum-server
 echo ""
 
 # Restart the deployment to pick up changes
-echo -e "${YELLOW}Step 5: Restarting Medplum deployment...${NC}"
+echo -e "${YELLOW}Step 6: Restarting Medplum deployment...${NC}"
 kubectl rollout restart deployment/medplum-server -n provider-registry
 echo -e "${GREEN}✓ Restart initiated${NC}"
 echo ""
 
 # Wait for rollout
-echo -e "${YELLOW}Step 6: Waiting for rollout to complete (timeout: 5 minutes)...${NC}"
+echo -e "${YELLOW}Step 7: Waiting for rollout to complete (timeout: 5 minutes)...${NC}"
 if kubectl rollout status deployment/medplum-server -n provider-registry --timeout=300s; then
     echo -e "${GREEN}✓ Rollout completed successfully${NC}"
 else
