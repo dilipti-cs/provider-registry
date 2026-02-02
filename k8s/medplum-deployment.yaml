@@ -32,6 +32,10 @@ spec:
         ports:
         - containerPort: 8103
           name: http
+        volumeMounts:
+        - name: config
+          mountPath: /usr/src/medplum/packages/server/medplum.config.json
+          subPath: medplum.config.json
         env:
         - name: NODE_ENV
           valueFrom:
@@ -134,3 +138,7 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
+      volumes:
+      - name: config
+        configMap:
+          name: medplum-server-config
