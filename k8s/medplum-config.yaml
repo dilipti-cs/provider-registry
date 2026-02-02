@@ -24,7 +24,7 @@ data:
         "port": 5432,
         "dbname": "medplum",
         "username": "medplum",
-        "password": "CHANGE_ME_IN_PRODUCTION"
+        "password": "GAEpswCsL5xxIGvkETUyEHHb2atEHTo2"
       },
       "redis": {
         "host": "redis-service",
