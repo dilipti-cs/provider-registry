@@ -120,6 +120,19 @@ resource "google_container_cluster" "primary" {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
 
+  # Logging configuration (replaces deprecated --enable-stackdriver-kubernetes)
+  logging_config {
+    enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
+  }
+
+  # Monitoring configuration (replaces deprecated --enable-stackdriver-kubernetes)
+  monitoring_config {
+    enable_components = ["SYSTEM_COMPONENTS"]
+    managed_prometheus {
+      enabled = true
+    }
+  }
+
   # Addons
   addons_config {
     http_load_balancing {

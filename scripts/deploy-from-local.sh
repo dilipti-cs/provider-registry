@@ -90,7 +90,8 @@ if [ "$CLUSTER_EXISTS" = false ]; then
         --enable-ip-alias \
         --network "projects/$GCP_PROJECT_ID/global/networks/default" \
         --subnetwork "projects/$GCP_PROJECT_ID/regions/$GCP_REGION/subnetworks/default" \
-        --enable-stackdriver-kubernetes \
+        --logging=SYSTEM,WORKLOAD \
+        --monitoring=SYSTEM \
         --addons HorizontalPodAutoscaling,HttpLoadBalancing \
         --workload-pool=$GCP_PROJECT_ID.svc.id.goog
 
