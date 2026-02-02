@@ -37,6 +37,8 @@ spec:
           mountPath: /usr/src/medplum/packages/server/medplum.config.json
           subPath: medplum.config.json
         env:
+        - name: MEDPLUM_CONFIG_FILE
+          value: "/usr/src/medplum/packages/server/medplum.config.json"
         - name: NODE_ENV
           valueFrom:
             configMapKeyRef:
