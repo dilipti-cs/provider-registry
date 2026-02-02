@@ -119,7 +119,7 @@ spec:
             configMapKeyRef:
               name: provider-registry-config
               key: APP_URL
-        - name: MEDPLUM_CORS_ORIGIN
+        - name: MEDPLUM_ALLOWED_ORIGINS
           value: "http://localhost:3001,http://localhost:8103"
         resources:
           requests:
