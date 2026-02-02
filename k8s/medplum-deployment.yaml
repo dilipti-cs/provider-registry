@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: medplum-server
-        image: medplum/medplum-server:latest
+        image: medplum/medplum-server:3.2.21
         ports:
         - containerPort: 8103
           name: http
