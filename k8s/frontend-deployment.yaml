@@ -28,9 +28,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        # This will be replaced by your actual image from Artifact Registry
-        # Format: gcr.io/PROJECT_ID/provider-registry-frontend:TAG
-        image: gcr.io/YOUR_PROJECT_ID/provider-registry-frontend:latest
+        image: gcr.io/dti-exp1/provider-registry-frontend:latest
         ports:
         - containerPort: 80
           name: http
