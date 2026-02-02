@@ -119,8 +119,6 @@ spec:
             configMapKeyRef:
               name: provider-registry-config
               key: APP_URL
-        - name: MEDPLUM_ALLOWED_ORIGINS
-          value: "http://localhost:3001,http://localhost:8103"
         resources:
           requests:
             memory: "512Mi"
